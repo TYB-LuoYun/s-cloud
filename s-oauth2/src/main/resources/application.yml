@@ -1,0 +1,71 @@
+server:
+  port: 7001
+
+spring: # 注意追加在配置文件中已经有 spring 前缀的后面
+  application:
+    name: auth-server
+
+  cloud:
+  nacos:
+    discovery:
+      server-addr: localhost:8848 # 服务注册中心地址
+
+  #数据库连接信息
+  datasource:
+    username: root
+    password: tyb
+    url: jdbc:mysql://127.0.0.1:3306/ftm-auth?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    #mysql8版本以上驱动包指定新的驱动类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #   数据源其他配置, 在 DruidConfig配置类中手动绑定
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+
+  redis:
+    host: localhost # Redis服务器地址
+    port: 6379 # Redis服务器连接端口
+    password: # Redis服务器连接密码（默认为空）,redis 不需要用户名的
+
+
+
+feign:
+  hystrix:
+    enabled: true
+#hystrix超时时间配置 （如果不配置的话默认是1000毫秒超时），hystrix的超时时间=(1 + MaxAutoRetries + MaxAutoRetriesNextServer) * ReadTimeout 比较好，具体看需求
+#降级情况：线程池已满，请求超时
+#熔断情况：Hystrix会对请求情况计数,当一定时间内失败请求百分比达到阈值,则触发熔断,断路器会完全打开
+hystrix:
+  command:
+    default:
+      fallback:
+        enabled: true     # 开启服务降级 ， hystrix超过超时时间，实行降级处理操作，给予用户反馈消息
+        execution:
+          timeout:
+            enabled: true   # 全局超时配置
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 15000
+      circuitBreaker:
+        enabled: true                      # 是否开启熔断
+        requestVolumeThreshold: 5          # 在时间窗口内，请求数量达到多少个，才判断熔断
+        errorThresholdPercentage: 50       # 失败百分比
+        sleepWindowInMilliseconds: 15000   # 进入熔断后，多少ms后进入半开状态，会尝试发送请求，失败继续熔断，成功则正常提供服务
+        metrics:
+          rollingStats:
+            timeInMilliseconds: 20000        # 配置时间窗口的时间间隔，单位ms
+
+# ribbon超时时间配置 （如果不配置的话默认是1000毫秒超时）
+# 开启feign支持hystrix，默认关闭
+#  ribbon超过调用时间，比如我们可以进行retry重试或去连接集群里的其他服务
+#  hystrix超过超时时间，实行降级处理操作，给予用户反馈消息
+#  Ribbon超时与Hystrix超时问题，为了确保Ribbon重试的时候不被熔断，我们就需要让Hystrix的超时时间大于Ribbon的超时时间
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+

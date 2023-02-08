@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: auth-server # 当前服务的应用名
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 # 注册中心地址
+      config:
+        server-addr: 127.0.0.1:8848 # 配置中心地址
+        file-extension: yml # 配置中心的配置格式
+  profiles:
+    active: dev # 指定环境
+
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9002
+
+# 暴露我们的所有监控信息
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
