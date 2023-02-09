@@ -13,11 +13,18 @@ import java.util.Map;
 @SessionAttributes("authorizationRequest")
 public class BootGrantController {
 
+    /**
+     * 自定义授权页面
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/custom/confirm_access")
     public ModelAndView getAccessConfirmation(Map<String, Object> model, HttpServletRequest request) throws Exception {
         AuthorizationRequest authorizationRequest = (AuthorizationRequest) model.get("authorizationRequest");
         ModelAndView view = new ModelAndView();
-        view.setViewName("base-grant");
+        view.setViewName("grant");
         view.addObject("clientId", authorizationRequest.getClientId());
         view.addObject("scopes",authorizationRequest.getScope());
         return view;

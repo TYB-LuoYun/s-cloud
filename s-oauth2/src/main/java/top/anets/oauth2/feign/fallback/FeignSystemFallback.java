@@ -1,21 +1,16 @@
-package top.anets.oauth2.feign;
+package top.anets.oauth2.feign.fallback;
 
-import com.netflix.hystrix.exception.HystrixBadRequestException;
-import feign.Target;
 import feign.hystrix.FallbackFactory;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.proxy.Enhancer;
-import org.springframework.security.oauth2.common.DefaultThrowableAnalyzer;
-import org.springframework.security.web.util.ThrowableAnalyzer;
 import org.springframework.stereotype.Component;
 import top.anets.exception.ServiceException;
 import top.anets.oauth2.domain.SysUserDto;
+import top.anets.oauth2.feign.IFeignSystem;
 
 @Slf4j
 @Component
 //自定义的
-public class FeignFallbackFactory implements FallbackFactory<IFeignSystem> {
+public class FeignSystemFallback implements FallbackFactory<IFeignSystem> {
 
 
     /**
@@ -36,6 +31,7 @@ public class FeignFallbackFactory implements FallbackFactory<IFeignSystem> {
                 if(true){
                     throw new ServiceException("服务错误");
                 }
+//
                 return  dto;
             }
         };

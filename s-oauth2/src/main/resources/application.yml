@@ -4,7 +4,6 @@ server:
 spring: # 注意追加在配置文件中已经有 spring 前缀的后面
   application:
     name: auth-server
-
   cloud:
   nacos:
     discovery:
@@ -30,6 +29,12 @@ spring: # 注意追加在配置文件中已经有 spring 前缀的后面
     host: localhost # Redis服务器地址
     port: 6379 # Redis服务器连接端口
     password: # Redis服务器连接密码（默认为空）,redis 不需要用户名的
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    servlet:
+      content-type: text/html
+
 
 
 

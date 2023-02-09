@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+
+<style>
+    .login-container {
+        margin: 50px;
+        width: 100%;
+    }
+
+    .form-container {
+        margin: 0px auto;
+        width: 50%;
+        text-align: center;
+        box-shadow: 1px 1px 10px #888888;
+        height: 300px;
+        padding: 5px;
+    }
+
+    input {
+        margin-top: 10px;
+        width: 350px;
+        height: 30px;
+        border-radius: 3px;
+        border: 1px #E9686B solid;
+        padding-left: 2px;
+
+    }
+
+    .btn {
+        width: 350px;
+        height: 35px;
+        line-height: 35px;
+        cursor: pointer;
+        margin-top: 20px;
+        border-radius: 3px;
+        background-color: #E9686B;
+        color: white;
+        border: none;
+        font-size: 15px;
+    }
+
+    .title {
+        margin-top: 5px;
+        font-size: 18px;
+        color: #E9686B;
+    }
+</style>
+<body>
+<div class="login-container">
+    <div class="form-container">
+        <p class="title">用户登录1</p>
+
+        <form action="http://127.0.0.1:6001/auth/login" method="post">
+            <div class="input-group mb-3">
+                <input name="username" type="text" class="form-control" placeholder="用户名">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-user"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input name="password" type="password" class="form-control" placeholder="密码">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="row mb-2 ">-->
+                <!--<div class="col-6">-->
+                    <!--<input name="code" type="text" class="form-control" placeholder="验证码">-->
+                <!--</div>-->
+                <!--<div class="col-6">-->
+                    <!--<img onclick="this.src='/authentication/code/image?'+Math.random()" src="/authentication/code/image"-->
+                         <!--alt="验证码"/>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!-- 提示信息, 表达式红线没关系，忽略它 -->
+            <div th:if="${param.error}">
+                <span th:text="${session.SPRING_SECURITY_LAST_EXCEPTION?.message}" style="color:red">用户名或密码错误</span>
+            </div>
+            <div class="row">
+                <!--<div class="col-8">-->
+                    <!--<div class="icheck-primary">-->
+                        <!--<input name="remember-me" type="checkbox" id="remember">-->
+                        <!--<label for="remember">-->
+                            <!--记住我-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!-- /.col -->
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary btn-block">登录</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

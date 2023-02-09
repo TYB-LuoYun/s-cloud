@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue模板</title>
+    <!--<link rel="stylesheet" type="text/css" media="all" href="/css/element.css" th:href="@{/css/element.css}"/>-->
+    <script type="text/javascript" src="../js/vue2.6.8.min.js" th:src="@{/js/vue2.6.8.min.js}"></script>
+    <!--<script type="text/javascript" src="../js/element.js" th:src="@{/js/element.js}"></script>-->
+    <script type="text/javascript" src="../js/axios.min.js" th:src="@{/js/axios.min.js}"></script>
+    <script type="text/javascript" src="../js/httpConfig.js" th:src="@{/js/httpConfig.js}"></script>
+    <style type="text/css">
+        body {
+            font-family: "微软雅黑";
+        }
+
+        .meveBox p {
+            margin: 0;
+            margin-left: 8px;
+            padding: 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div id="test">
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data: {},
+        created() {
+            this.authorize()
+        },
+        mounted() {
+        },
+        methods: {
+            authorize() {
+                var clientId = [[${clientId}]]
+                var getCookie = this.getCookie("JSESSIONID")
+                axios.request({
+                    method: 'get',
+                    url: serveHttp + '/authentication/oauth/logoutSession',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': getCookie
+                    }
+                }).then(function (res) {
+                    console.log("--------" + res);
+                    window.location.href = serveHttp + "/authentication/oauth/authorize?client_id=" + clientId + "&response_type=code"
+
+                })
+                    .catch(function (error) {
+                    })
+            },
+            //获取cookie
+            getCookie: function (cname) {
+                var name = cname + "=";
+                var ca = document.cookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') c = c.substring(1);
+                    if (c.indexOf(name) != -1) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            },
+        }
+    })
+</script>
+</html>

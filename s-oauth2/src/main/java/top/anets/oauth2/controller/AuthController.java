@@ -102,7 +102,10 @@ public class AuthController {
                                                         @ApiParam("Oauth2客户端秘钥") @RequestParam String client_secret,
                                                         @ApiParam("刷新token") @RequestParam(required = false) String refresh_token,
                                                         @ApiParam("登录用户名") @RequestParam(required = false) String username,
-                                                        @ApiParam("登录密码") @RequestParam(required = false) String password) throws HttpRequestMethodNotSupportedException {
+                                                        @ApiParam("登录密码") @RequestParam(required = false) String password,
+                                  @ApiParam("授权码") @RequestParam(required = false) String code
+
+       ) throws HttpRequestMethodNotSupportedException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("grant_type",grant_type);
 //        parameters.put("client_id",client_id);
@@ -110,6 +113,7 @@ public class AuthController {
         parameters.putIfAbsent("refresh_token",refresh_token);
         parameters.putIfAbsent("username",username);
         parameters.putIfAbsent("password",password);
+        parameters.putIfAbsent("code",code );
 
 
 //      在这里，可以对grant_type,进行拦截，比如说如果是微信登录，可以先进行登录，然后再调下面的方法进行颁发令牌

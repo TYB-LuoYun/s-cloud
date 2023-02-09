@@ -124,6 +124,10 @@ secure:
     urls: #配置白名单路径
     - "/actuator/**"
     - "/auth/oauth/token"
+    - "/auth/oauth/token"
+    - "/auth/oauth/authorize"
+    - "/auth/loginPage"
+    - "/auth/login"
     - "/auth/manual/oauth/token"
     - "/system/sys-user/login"
     - "/monitor/**"

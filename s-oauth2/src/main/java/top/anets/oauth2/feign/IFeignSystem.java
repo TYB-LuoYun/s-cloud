@@ -1,11 +1,11 @@
 package top.anets.oauth2.feign;
 
-import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import top.anets.oauth2.domain.SysUserDto;
+import top.anets.oauth2.feign.fallback.FeignSystemFallback;
 
 /**
  * @author ftm
@@ -14,8 +14,8 @@ import top.anets.oauth2.domain.SysUserDto;
  * fallbackFactory: 服务触发降级后执行哪个类的方法
  */
 @FeignClient(value="system-server", contextId = "webflux")
-//@FeignClient(value="system-server", contextId = "webflux" ,fallbackFactory = FeignFallbackFactory.class)
+//@FeignClient(value="system-server", contextId = "webflux" ,fallbackFactory = FeignSystemFallback.class)
 public interface IFeignSystem {
-    @RequestMapping("/user/loadUserByUsername")
+    @RequestMapping("/feign/user/loadUserByUsername")
     SysUserDto loadUserByUsername(@RequestParam("username") String username);
 }

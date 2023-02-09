@@ -75,22 +75,40 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //        登录功能配置=============================================S
 
 
+//
+//        http.formLogin()
+//                // 成功处理器
+//                .successHandler(customAuthenticationSuccessHandler())
+//                .failureHandler(customAuthenticationFailureHandler())
+//                .and()
+//                .logout()
+//                .logoutSuccessHandler(customLogoutSuccessHandler())
+//                .and()
+//                .csrf().disable();
+////        登录功能配置=============================================E
+//
+//
 
-        http.formLogin()
-                // 成功处理器
-                .successHandler(customAuthenticationSuccessHandler())
-                .failureHandler(customAuthenticationFailureHandler())
+
+
+        // 验证码过滤器
+        http.formLogin().loginPage("http://127.0.0.1:6001/auth/loginPage")
+                // 登录调用的接口地址
+                .loginProcessingUrl("/login")
+//                .successHandler(customAuthenticationSuccessHandler)
                 .and()
-                .logout()
-                .logoutSuccessHandler(customLogoutSuccessHandler())
-                .and()
+//                .rememberMe() // 记住功能配置
+//                .tokenRepository(jdbcTokenRepository()) // 保存登录信息
+//                .tokenValiditySeconds(60 * 30 * 30) // 记住我有效时长
                 .csrf().disable();
-//        登录功能配置=============================================E
 
 
-//        允许获取公钥接口的访问；
+
+        //        允许获取公钥接口的访问；
         http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+                .antMatchers("/login", "/loginPage", "/code/image", "/logout/expirePage", "/logout/page",
+                        "/oauth/logoutSession", "/oauth/customLogout").permitAll()
                 .antMatchers("/rsa/publicKey").permitAll()
 //               健康检查
                 .antMatchers("/assets/**").permitAll()
@@ -101,6 +119,23 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/oauth/user").permitAll()
                 .anyRequest().authenticated();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ////        模拟
